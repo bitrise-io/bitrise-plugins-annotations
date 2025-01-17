@@ -22,7 +22,7 @@ workflows:
         inputs:
         - skip_step_yml_validation: "yes"
 
-  create-release:
+  trigger-release:
     triggers:
       tag:
       - name: "*.*.*"
@@ -33,6 +33,20 @@ workflows:
         - workflow_id: binary-tool-release
         - exported_environment_variable_names: GIT_REPOSITORY_URL
         - app_slug: $CONTROL_CENTER_APP_SLUG
+  
+  create-release:
+    description: Creates Linux and Darwin binaries, then publishes a GitHub release
+    envs:
+    - GITHUB_TOKEN: $GIT_BOT_USER_ACCESS_TOKEN # Goreleaser expects this env var
+    steps:
+    - bundle::setup-go: {}
+    - script:
+        title: Goreleaser (create binaries + publish to GH)
+        deps:
+          brew:
+          - name: goreleaser
+        inputs:
+        - content: goreleaser release
 
   test-binary-build:
     description: Tests the release build process by creating a snapshot release (without publishing)
