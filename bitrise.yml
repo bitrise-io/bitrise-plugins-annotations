@@ -7,6 +7,7 @@ workflows:
       pull_request:
         - source_branch: '*'
     steps:
+    - git-clone@8: {}
     - git::https://github.com/bitrise-steplib/steps-check.git:
         inputs:
         - skip_step_yml_validation: "yes"
@@ -26,6 +27,7 @@ workflows:
   test-binary-build:
     description: Tests the release build process by creating a snapshot release (without publishing)
     steps:
+    - git-clone@8: {}
     - script:
         title: Goreleaser (create snapshot binaries)
         deps:
