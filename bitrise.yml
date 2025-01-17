@@ -3,27 +3,25 @@ default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
 
 workflows:
   test:
+    triggers:
+      pull_request:
+        - source_branch: '*'
     steps:
     - git::https://github.com/bitrise-steplib/steps-check.git:
         inputs:
         - skip_step_yml_validation: "yes"
 
   create-release:
-    description: Creates Linux and Darwin binaries, then publishes a GitHub release
-    envs:
-    - GITHUB_TOKEN: $GIT_BOT_USER_ACCESS_TOKEN  # Goreleaser expects this env var
+    triggers:
+      tag:
+        - name: "*.*.*"
     steps:
-    - script:
-        title: Goreleaser (create binaries + publish to GH)
-        deps:
-          brew:
-          - name: goreleaser
+    - trigger-bitrise-workflow@0:
         inputs:
-        - content: |
-            #!/usr/bin/env bash
-            set -ex
-
-            goreleaser release
+        - api_token: "$CONTROL_CENTER_TRIGGER_KEY"
+        - workflow_id: binary-tool-release
+        - exported_environment_variable_names: GIT_REPOSITORY_URL
+        - app_slug: "$CONTROL_CENTER_APP_SLUG"
 
   test-binary-build:
     description: Tests the release build process by creating a snapshot release (without publishing)
@@ -38,4 +36,4 @@ workflows:
             #!/usr/bin/env bash
             set -ex
 
-            goreleaser release --snapshot --rm-dist
+            goreleaser release --snapshot --clean
