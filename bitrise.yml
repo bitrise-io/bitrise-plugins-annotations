@@ -1,13 +1,23 @@
 format_version: "13"
 default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
 
+step_bundles:
+  setup:
+    steps:
+    - activate-ssh-key@4: { }
+    - git-clone@8: { }
+    - script:
+        title: Setup pinned Go version
+        inputs:
+        - content: asdf install
+
 workflows:
   test:
     triggers:
       pull_request:
         - source_branch: '*'
     steps:
-    - git-clone@8: {}
+    - bundle::setup: { }
     - git::https://github.com/bitrise-steplib/steps-check.git:
         inputs:
         - skip_step_yml_validation: "yes"
@@ -27,7 +37,7 @@ workflows:
   test-binary-build:
     description: Tests the release build process by creating a snapshot release (without publishing)
     steps:
-    - git-clone@8: {}
+    - bundle::setup: { }
     - script:
         title: Goreleaser (create snapshot binaries)
         deps:
