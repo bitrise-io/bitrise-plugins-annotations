@@ -6,6 +6,8 @@ step_bundles:
     steps:
     - activate-ssh-key@4: { }
     - git-clone@8: { }
+  setup-go:
+    steps:
     - script:
         title: Setup pinned Go version
         inputs:
@@ -18,6 +20,7 @@ workflows:
       - source_branch: "*"
     steps:
     - bundle::setup: { }
+    - bundle::setup-go: { }
     - git::https://github.com/bitrise-steplib/steps-check.git:
         inputs:
         - skip_step_yml_validation: "yes"
@@ -39,7 +42,7 @@ workflows:
     envs:
     - GITHUB_TOKEN: $GIT_BOT_USER_ACCESS_TOKEN # Goreleaser expects this env var
     steps:
-    - bundle::setup: {}
+    - bundle::setup-go: {}
     - script:
         title: Goreleaser (create binaries + publish to GH)
         deps:
@@ -47,7 +50,6 @@ workflows:
           - name: goreleaser
         inputs:
         - content: goreleaser release
-
   test-binary-build:
     description: Tests the release build process by creating a snapshot release (without publishing)
     steps:
