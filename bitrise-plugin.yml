@@ -1,6 +1,6 @@
 name: annotations
 description: Build Annotations
 executable:
-  osx: https://github.com/bitrise-io/bitrise-plugins-annotations/releases/download/0.1.0/bitrise-plugins-annotations-Darwin-x86_64
-  osx-arm64: https://github.com/bitrise-io/bitrise-plugins-annotations/releases/download/0.1.0/bitrise-plugins-annotations-Darwin-arm64
-  linux: https://github.com/bitrise-io/bitrise-plugins-annotations/releases/download/0.1.0/bitrise-plugins-annotations-Linux-x86_64
+  osx: https://github.com/bitrise-io/bitrise-plugins-annotations/releases/download/0.1.1/bitrise-plugins-annotations-Darwin-x86_64
+  osx-arm64: https://github.com/bitrise-io/bitrise-plugins-annotations/releases/download/0.1.1/bitrise-plugins-annotations-Darwin-arm64
+  linux: https://github.com/bitrise-io/bitrise-plugins-annotations/releases/download/0.1.1/bitrise-plugins-annotations-Linux-x86_64
