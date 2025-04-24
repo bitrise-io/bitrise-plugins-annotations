@@ -36,13 +36,13 @@ workflows:
         - workflow_id: binary-tool-release
         - exported_environment_variable_names: GIT_REPOSITORY_URL
         - app_slug: $CONTROL_CENTER_APP_SLUG
-  
+
   create-release:
     description: Creates Linux and Darwin binaries, then publishes a GitHub release
     envs:
-    - GITHUB_TOKEN: $GIT_BOT_USER_ACCESS_TOKEN # Goreleaser expects this env var
+    - GITHUB_TOKEN: $GIT_BOT_USER_ACCESS_TOKEN  # Goreleaser expects this env var
     steps:
-    - bundle::setup-go: {}
+    - bundle::setup-go: { }
     - script:
         title: Goreleaser (create binaries + publish to GH)
         deps:
