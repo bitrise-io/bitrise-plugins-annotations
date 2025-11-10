@@ -21,9 +21,27 @@ workflows:
     steps:
     - bundle::setup: { }
     - bundle::setup-go: { }
-    - git::https://github.com/bitrise-steplib/steps-check.git:
+    - script:
+        title: Install golangci-lint v2.6.1
         inputs:
-        - skip_step_yml_validation: "yes"
+        - content: |
+            #!/usr/bin/env bash
+            set -ex
+            curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b ./bin v2.6.1
+    - script:
+        title: Run golangci-lint
+        inputs:
+        - content: |
+            #!/usr/bin/env bash
+            set -ex
+            ./bin/golangci-lint run --timeout 5m
+    - script:
+        title: Run tests
+        inputs:
+        - content: |
+            #!/usr/bin/env bash
+            set -ex
+            go test ./...
 
   trigger-release:
     triggers:

@@ -39,8 +39,9 @@ func do(method, route string, body any) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer resp.Body.Close() //nolint:errcheck // Response body close error can be ignored in this context
 
+	//nolint:staticcheck // Prefer explicit range check for HTTP status codes
 	if !(200 <= resp.StatusCode && resp.StatusCode < 300) {
 		return nil, errors.New(http.StatusText(resp.StatusCode))
 	}

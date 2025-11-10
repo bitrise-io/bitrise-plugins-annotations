@@ -1,6 +1,6 @@
 module github.com/bitrise-io/bitrise-plugins-annotations
 
-go 1.20
+go 1.25.3
 
 require github.com/spf13/cobra v1.7.0
 
